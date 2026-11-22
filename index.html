@@ -3,12 +3,48 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#090b14">
   <title>THE 77 CENTRAL</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
-  <h1>THE 77 CENTRAL</h1>
-  <p>Seu espaço. Sua comunidade.</p>
+  <header class="topbar">
+    <div class="logo">77</div>
+    <div>
+      <h1>THE 77</h1>
+      <p>CENTRAL DA GUILDA</p>
+    </div>
+    <span class="status">● ONLINE</span>
+  </header>
+
+  <main class="dashboard">
+    <section class="welcome">
+      <p>PAINEL DE ADMINISTRAÇÃO</p>
+      <h2>Bem-vindo à THE 77</h2>
+      <p>Organize sua guilda em um só lugar.</p>
+    </section>
+
+    <section class="stats">
+      <article><strong id="memberCount">0</strong><span>JOGADORES</span></article>
+      <article><strong id="eventCount">0</strong><span>EVENTOS</span></article>
+      <article><strong>10</strong><span>VAGAS DEMO</span></article>
+    </section>
+
+    <nav class="menu">
+      <button data-page="inicio">INÍCIO</button>
+      <button data-page="jogadores">JOGADORES</button>
+      <button data-page="eventos">EVENTOS</button>
+      <button data-page="ranking">RANKING</button>
+    </nav>
+
+    <section id="central-content" class="content">
+      <h2>Painel principal</h2>
+      <p>Selecione uma área para começar.</p>
+    </section>
+  </main>
+
+  <footer>THE 77 CENTRAL • VERSÃO 1.0</footer>
 </body>
 </html>
