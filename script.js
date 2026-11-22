@@ -1,235 +1,259 @@
 
-const content = document.getElementById("central-content");
+const STORAGE_KEY = "the77_central_x1";
 
-let jogadores = JSON.parse(localStorage.getItem("the77_jogadores") || "[]");
-let eventos = JSON.parse(localStorage.getItem("the77_eventos") || "[]");
-
-function salvarDados() {
-  localStorage.setItem("the77_jogadores", JSON.stringify(jogadores));
-  localStorage.setItem("the77_eventos", JSON.stringify(eventos));
-  atualizarContadores();
-}
-
-function atualizarContadores() {
-  document.getElementById("memberCount").textContent = jogadores.length;
-  document.getElementById("eventCount").textContent = eventos.length;
-}
-
-function elemento(tag, texto) {
-  const el = document.createElement(tag);
-  el.textContent = texto;
-  return el;
-}
-
-function abrirInicio() {
-  content.replaceChildren(
-    elemento("h2", "Painel principal"),
-    elemento("p", "Bem-vindo à central oficial da THE 77!"),
-    elemento("p", "Aqui você organiza os jogadores, eventos e o ranking da guilda.")
-  );
-}
-
-function abrirJogadores() {
-  content.replaceChildren();
-
-  content.append(
-    elemento("h2", "Jogadores"),
-    elemento("p", "Cadastre os membros da guilda.")
-  );
-
-  const nome = document.createElement("input");
-  nome.placeholder = "Digite o nick do jogador";
-  nome.maxLength = 30;
-
-  const cargo = document.createElement("select");
-
-  ["Jogador", "ADM", "Líder", "Recrutador"].forEach(item => {
-    const opcao = elemento("option", item);
-    opcao.value = item;
-    cargo.append(opcao);
-  });
-
-  const botao = elemento("button", "ADICIONAR JOGADOR");
-
-  botao.addEventListener("click", () => {
-    const nick = nome.value.trim();
-
-    if (!nick) {
-      alert("Digite o nick do jogador!");
-      return;
-    }
-
-    jogadores.push({
-      id: Date.now(),
-      nome: nick,
-      cargo: cargo.value,
-      pontos: 0
-    });
-
-    salvarDados();
-    abrirJogadores();
-  });
-
-  content.append(nome, cargo, botao);
-
-  content.append(elemento("h2", "Lista de membros"));
-
-  if (jogadores.length === 0) {
-    content.append(elemento("p", "Nenhum jogador cadastrado ainda."));
-  }
-
-  jogadores.forEach(jogador => {
-    const item = document.createElement("div");
-    item.className = "item";
-
-    const informacao = elemento(
-      "p",
-      jogador.nome + " • " + jogador.cargo
-    );
-
-    const excluir = elemento("button", "EXCLUIR");
-
-    excluir.addEventListener("click", () => {
-      if (!confirm("Deseja excluir este jogador?")) return;
-
-      jogadores = jogadores.filter(p => p.id !== jogador.id);
-      salvarDados();
-      abrirJogadores();
-    });
-
-    item.append(informacao, excluir);
-    content.append(item);
-  });
-}
-
-function abrirEventos() {
-  content.replaceChildren();
-
-  content.append(
-    elemento("h2", "Eventos"),
-    elemento("p", "Organize os confrontos da THE 77.")
-  );
-
-  const nome = document.createElement("input");
-  nome.placeholder = "Nome do evento";
-  nome.maxLength = 50;
-
-  const tipo = document.createElement("select");
-
-  ["4v4", "6v6", "Campeonato", "Treino"].forEach(item => {
-    const opcao = elemento("option", item);
-    opcao.value = item;
-    tipo.append(opcao);
-  });
-
-  const data = document.createElement("input");
-  data.type = "date";
-
-  const botao = elemento("button", "CRIAR EVENTO");
-
-  botao.addEventListener("click", () => {
-    if (!nome.value.trim() || !data.value) {
-      alert("Preencha o nome e a data do evento!");
-      return;
-    }
-
-    eventos.push({
-      id: Date.now(),
-      nome: nome.value.trim(),
-      tipo: tipo.value,
-      data: data.value
-    });
-
-    salvarDados();
-    abrirEventos();
-  });
-
-  content.append(nome, tipo, data, botao);
-  content.append(elemento("h2", "Próximos eventos"));
-
-  if (eventos.length === 0) {
-    content.append(elemento("p", "Nenhum evento cadastrado."));
-  }
-
-  eventos.forEach(evento => {
-    const item = document.createElement("div");
-    item.className = "item";
-
-    const informacao = elemento(
-      "p",
-      evento.nome + " • " + evento.tipo + " • " + evento.data
-    );
-
-    const excluir = elemento("button", "EXCLUIR");
-
-    excluir.addEventListener("click", () => {
-      if (!confirm("Deseja excluir este evento?")) return;
-
-      eventos = eventos.filter(e => e.id !== evento.id);
-      salvarDados();
-      abrirEventos();
-    });
-
-    item.append(informacao, excluir);
-    content.append(item);
-  });
-}
-
-function abrirRanking() {
-  content.replaceChildren(
-    elemento("h2", "Ranking THE 77"),
-    elemento("p", "Pontuação dos jogadores da guilda.")
-  );
-
-  const ordenados = [...jogadores].sort(
-    (a, b) => b.pontos - a.pontos
-  );
-
-  if (ordenados.length === 0) {
-    content.append(elemento("p", "Cadastre jogadores para montar o ranking."));
-  }
-
-  ordenados.forEach((jogador, indice) => {
-    const item = document.createElement("div");
-    item.className = "item";
-
-    const informacao = elemento(
-      "p",
-      (indice + 1) + "º " + jogador.nome + " — " + jogador.pontos + " pontos"
-    );
-
-    const adicionar = elemento("button", "+1 PONTO");
-
-    adicionar.addEventListener("click", () => {
-      jogador.pontos++;
-      salvarDados();
-      abrirRanking();
-    });
-
-    item.append(informacao, adicionar);
-    content.append(item);
-  });
-}
-
-const paginas = {
-  inicio: abrirInicio,
-  jogadores: abrirJogadores,
-  eventos: abrirEventos,
-  ranking: abrirRanking
+let dados = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
+  jogadores: [],
+  confrontos: []
 };
 
-document.querySelectorAll(".menu button").forEach(botao => {
-  botao.addEventListener("click", () => {
-    document.querySelectorAll(".menu button").forEach(item => {
-      item.classList.remove("active");
-    });
+let paginaAtual = "inicio";
 
-    botao.classList.add("active");
+function salvar() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(dados));
+  atualizarEstatisticas();
+}
 
-    const pagina = botao.dataset.page;
-    if (paginas[pagina]) paginas[pagina]();
+function escapar(valor) {
+  return String(valor).replace(/[&<>"']/g, letra => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  })[letra]);
+}
+
+function atualizarEstatisticas() {
+  document.getElementById("totalJogadores").textContent =
+    dados.jogadores.length;
+
+  document.getElementById("totalConfrontos").textContent =
+    dados.confrontos.length;
+
+  document.getElementById("totalVitorias").textContent =
+    dados.confrontos.filter(c => c.vencedor).length;
+}
+
+function abrirPagina(pagina) {
+  paginaAtual = pagina;
+  const area = document.getElementById("conteudo");
+
+  if (pagina === "inicio") {
+    area.innerHTML = `
+      <div class="panel">
+        <h2>Bem-vindo à THE 77</h2>
+        <p>Central oficial de confrontos da guilda.</p>
+        <p>Cadastre jogadores e organize seus desafios X1.</p>
+      </div>`;
+  }
+
+  if (pagina === "jogadores") {
+    area.innerHTML = `
+      <div class="panel">
+        <h2>Jogadores</h2>
+        <p>Cadastre os membros da guilda.</p>
+
+        <form id="formJogador">
+          <input name="nome" placeholder="Nick do Free Fire" required>
+          <input name="id" placeholder="ID do jogador" required>
+          <button type="submit">Cadastrar jogador</button>
+        </form>
+
+        <div class="lista">
+          ${dados.jogadores.map(j => `
+            <div class="item">
+              <div>
+                <strong>${escapar(j.nome)}</strong>
+                <p>ID: ${escapar(j.id)}</p>
+              </div>
+              <button data-action="remover-jogador"
+                data-id="${j.idInterno}">Excluir</button>
+            </div>
+          `).join("") || "<p>Nenhum jogador cadastrado.</p>"}
+        </div>
+      </div>`;
+  }
+
+  if (pagina === "confrontos") {
+    const opcoes = dados.jogadores.map(j =>
+      `<option value="${j.idInterno}">${escapar(j.nome)}</option>`
+    ).join("");
+
+    area.innerHTML = `
+      <div class="panel">
+        <h2>Novo confronto X1</h2>
+        <p>Escolha os dois jogadores do desafio.</p>
+
+        ${dados.jogadores.length < 2
+          ? "<p>Cadastre pelo menos dois jogadores primeiro.</p>"
+          : `
+          <form id="formConfronto">
+            <label>Jogador 1</label>
+            <select name="jogador1" required>${opcoes}</select>
+
+            <label>Jogador 2</label>
+            <select name="jogador2" required>${opcoes}</select>
+
+            <label>Data e horário</label>
+            <input type="datetime-local" name="data" required>
+
+            <button type="submit">Criar confronto</button>
+          </form>
+        `}
+
+        <h2>Histórico de confrontos</h2>
+
+        ${dados.confrontos.map(c => {
+          const j1 = dados.jogadores.find(j => j.idInterno === c.jogador1);
+          const j2 = dados.jogadores.find(j => j.idInterno === c.jogador2);
+
+          return `
+            <div class="item">
+              <div>
+                <strong>${escapar(j1?.nome || "Jogador removido")}
+                  VS ${escapar(j2?.nome || "Jogador removido")}</strong>
+                <p>${escapar(c.data || "Data não informada")}</p>
+                <p>${c.vencedor
+                  ? "Vencedor: " + escapar(
+                    dados.jogadores.find(j => j.idInterno === c.vencedor)?.nome || "Não disponível"
+                  )
+                  : "Aguardando resultado"}</p>
+              </div>
+              ${!c.vencedor ? `
+                <button data-action="resultado"
+                  data-id="${c.id}">Registrar resultado</button>
+              ` : ""}
+            </div>`;
+        }).join("") || "<p>Nenhum confronto criado.</p>"}
+      </div>`;
+  }
+
+  if (pagina === "ranking") {
+    const ranking = dados.jogadores.map(j => ({
+      ...j,
+      vitorias: dados.confrontos.filter(c => c.vencedor === j.idInterno).length,
+      derrotas: dados.confrontos.filter(c =>
+        c.vencedor &&
+        (c.jogador1 === j.idInterno || c.jogador2 === j.idInterno) &&
+        c.vencedor !== j.idInterno
+      ).length
+    })).sort((a, b) => b.vitorias - a.vitorias);
+
+    area.innerHTML = `
+      <div class="panel">
+        <h2>Ranking THE 77</h2>
+        ${ranking.map((j, i) => `
+          <div class="item">
+            <strong>#${i + 1} ${escapar(j.nome)}</strong>
+            <span>${j.vitorias} vitórias • ${j.derrotas} derrotas</span>
+          </div>
+        `).join("") || "<p>Cadastre jogadores para iniciar o ranking.</p>"}
+      </div>`;
+  }
+
+  if (pagina === "equipes") {
+    area.innerHTML = `
+      <div class="panel">
+        <h2>Equipes</h2>
+        <p>Área reservada para organizar equipes e confrontos 4v4 e 6v6.</p>
+        <p>Vamos desenvolver essa função na próxima etapa.</p>
+      </div>`;
+  }
+
+  document.querySelectorAll("[data-page]").forEach(botao => {
+    botao.style.background =
+      botao.dataset.page === pagina ? "#702cc0" : "";
   });
+}
+
+document.addEventListener("click", evento => {
+  const menu = evento.target.closest("[data-page]");
+
+  if (menu) {
+    abrirPagina(menu.dataset.page);
+    return;
+  }
+
+  const botao = evento.target.closest("[data-action]");
+  if (!botao) return;
+
+  const id = botao.dataset.id;
+
+  if (botao.dataset.action === "remover-jogador") {
+    if (!confirm("Deseja excluir este jogador?")) return;
+
+    dados.jogadores = dados.jogadores.filter(j => j.idInterno !== id);
+    salvar();
+    abrirPagina("jogadores");
+  }
+
+  if (botao.dataset.action === "resultado") {
+    const confronto = dados.confrontos.find(c => c.id === id);
+    if (!confronto) return;
+
+    const opcoes = [confronto.jogador1, confronto.jogador2]
+      .map(idJogador => dados.jogadores.find(j => j.idInterno === idJogador))
+      .filter(Boolean);
+
+    const escolha = prompt(
+      "Digite 1 para " + (opcoes[0]?.nome || "Jogador 1") +
+      " ou 2 para " + (opcoes[1]?.nome || "Jogador 2")
+    );
+
+    if (escolha !== "1" && escolha !== "2") return;
+
+    confronto.vencedor = escolha === "1"
+      ? confronto.jogador1
+      : confronto.jogador2;
+
+    salvar();
+    abrirPagina("confrontos");
+  }
 });
 
-atualizarContadores();
-abrirInicio();
+document.addEventListener("submit", evento => {
+  evento.preventDefault();
+  const formulario = evento.target;
+  const campos = new FormData(formulario);
+
+  if (formulario.id === "formJogador") {
+    const nome = String(campos.get("nome")).trim();
+    const id = String(campos.get("id")).trim();
+
+    if (!nome || !id) return;
+
+    dados.jogadores.push({
+      idInterno: crypto.randomUUID(),
+      nome,
+      id
+    });
+
+    salvar();
+    abrirPagina("jogadores");
+  }
+
+  if (formulario.id === "formConfronto") {
+    const jogador1 = campos.get("jogador1");
+    const jogador2 = campos.get("jogador2");
+    const data = campos.get("data");
+
+    if (jogador1 === jogador2) {
+      alert("Escolha dois jogadores diferentes.");
+      return;
+    }
+
+    dados.confrontos.push({
+      id: crypto.randomUUID(),
+      jogador1,
+      jogador2,
+      data,
+      vencedor: null
+    });
+
+    salvar();
+    abrirPagina("confrontos");
+  }
+});
+
+atualizarEstatisticas();
+abrirPagina("inicio");
