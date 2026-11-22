@@ -18,7 +18,7 @@ body {
   gap: 12px;
   padding: 18px;
   background: #111421;
-  border-bottom: 1px solid #29213e;
+  border-bottom: 1px solid #302348;
 }
 
 .logo {
@@ -28,6 +28,7 @@ body {
   place-items: center;
   border-radius: 12px;
   background: #792cff;
+  color: white;
   font-size: 23px;
   font-weight: bold;
   box-shadow: 0 0 18px #792cff66;
@@ -39,7 +40,7 @@ body {
 }
 
 .topbar p {
-  color: #a5a0b5;
+  color: #aaa0bd;
   font-size: 10px;
   letter-spacing: 2px;
   margin-top: 4px;
@@ -61,14 +62,14 @@ body {
 
 .welcome {
   padding: 25px 20px;
-  border: 1px solid #38245c;
+  border: 1px solid #492b70;
   border-radius: 16px;
-  background: linear-gradient(135deg, #21133a, #111421);
+  background: linear-gradient(135deg, #251440, #111421);
   margin-bottom: 18px;
 }
 
 .welcome p:first-child {
-  color: #b68aff;
+  color: #c19aff;
   font-size: 10px;
   letter-spacing: 2px;
   margin-bottom: 12px;
@@ -119,6 +120,12 @@ body {
   margin-bottom: 18px;
 }
 
+button {
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
 .menu button {
   background: #171b2b;
   color: #c9c4d5;
@@ -126,7 +133,6 @@ body {
   padding: 13px 5px;
   border-radius: 10px;
   font-size: 10px;
-  font-weight: bold;
 }
 
 .menu button.active,
@@ -153,6 +159,49 @@ body {
   color: #aaa5b8;
   font-size: 13px;
   line-height: 1.5;
+}
+
+.content input,
+.content select {
+  width: 100%;
+  padding: 13px;
+  margin-top: 12px;
+  border-radius: 9px;
+  border: 1px solid #38334d;
+  background: #090b14;
+  color: white;
+  font-size: 14px;
+}
+
+.content button {
+  background: #792cff;
+  color: white;
+  border: none;
+  border-radius: 9px;
+  padding: 12px 15px;
+  margin-top: 12px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: #191d2c;
+  border: 1px solid #303348;
+  border-radius: 10px;
+  padding: 12px;
+  margin-top: 12px;
+}
+
+.item p {
+  color: white;
+  overflow-wrap: anywhere;
+}
+
+.item button {
+  flex-shrink: 0;
+  margin-top: 0;
 }
 
 footer {
