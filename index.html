@@ -4,65 +4,66 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#090b14">
-  <title>THE 77 | Central da Guilda</title>
+  <meta name="theme-color" content="#090912">
+  <title>THE 77 CENTRAL X1</title>
   <link rel="stylesheet" href="estilo.css">
   <script src="script.js" defer></script>
 </head>
-
 <body>
 
-  <header class="topbar">
-    <div class="logo">77</div>
-    <div>
-      <h1>THE 77</h1>
-      <p>CENTRAL DA GUILDA</p>
-    </div>
-    <span class="status">● ONLINE</span>
-  </header>
+<header class="topbar">
+  <div class="logo">77</div>
+  <div>
+    <h1>THE 77</h1>
+    <p>CENTRAL X1</p>
+  </div>
+  <span class="online">● ONLINE</span>
+</header>
 
-  <main class="dashboard">
+<main class="container">
 
-    <section class="welcome">
-      <p>PAINEL DE ADMINISTRAÇÃO</p>
+  <section class="welcome">
+    <span>PAINEL DE CONFRONTOS</span>
+    <h2>Central de Combate</h2>
+    <p>Organize seus desafios e domine o ranking.</p>
+  </section>
+
+  <section class="stats">
+    <article>
+      <strong id="totalJogadores">0</strong>
+      <span>JOGADORES</span>
+    </article>
+    <article>
+      <strong id="totalConfrontos">0</strong>
+      <span>CONFRONTOS</span>
+    </article>
+    <article>
+      <strong id="totalVitorias">0</strong>
+      <span>VITÓRIAS</span>
+    </article>
+  </section>
+
+  <nav class="menu">
+    <button data-page="inicio">Início</button>
+    <button data-page="jogadores">Jogadores</button>
+    <button data-page="confrontos">Confrontos</button>
+    <button data-page="ranking">Ranking</button>
+    <button data-page="equipes">Equipes</button>
+  </nav>
+
+  <section id="conteudo">
+    <div class="panel">
       <h2>Bem-vindo à THE 77</h2>
-      <p>O centro de comando da nossa guilda.</p>
-    </section>
+      <p>O centro oficial de confrontos da guilda.</p>
+      <p>Escolha uma opção no menu para começar.</p>
+    </div>
+  </section>
 
-    <section class="stats">
-      <article>
-        <strong id="memberCount">0</strong>
-        <span>JOGADORES</span>
-      </article>
+</main>
 
-      <article>
-        <strong id="eventCount">0</strong>
-        <span>EVENTOS</span>
-      </article>
-
-      <article>
-        <strong>77</strong>
-        <span>THE 77</span>
-      </article>
-    </section>
-
-    <nav class="menu">
-      <button data-page="inicio">INÍCIO</button>
-      <button data-page="jogadores">JOGADORES</button>
-      <button data-page="eventos">EVENTOS</button>
-      <button data-page="ranking">RANKING</button>
-    </nav>
-
-    <section id="central-content" class="content">
-      <h2>Painel principal</h2>
-      <p>Selecione uma área para começar.</p>
-    </section>
-
-  </main>
-
-  <footer>
-    THE 77 CENTRAL • VERSÃO 1.0
-  </footer>
+<footer>
+  THE 77 CENTRAL X1 • VERSÃO 1.0
+</footer>
 
 </body>
 </html>
