@@ -1,0 +1,57 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #090b14;
+  --panel: #121625;
+  --purple: #8b5cf6;
+  --neon: #b58cff;
+  --text: #f5f3ff;
+  --muted: #9290a5;
+}
+
+body {
+  min-height: 100vh;
+  padding: 20px;
+  background:
+    radial-gradient(circle at top, #302052 0%, transparent 42%),
+    var(--bg);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  color: var(--neon);
+  font-size: 32px;
+  text-align: center;
+  margin-top: 60px;
+  letter-spacing: 2px;
+  text-shadow: 0 0 18px #8b5cf6;
+}
+
+p {
+  color: var(--muted);
+  text-align: center;
+  margin-top: 15px;
+  font-size: 16px;
+}
+
+body::after {
+  content: "THE 77 • CENTRAL";
+  display: block;
+  max-width: 420px;
+  margin: 45px auto;
+  padding: 22px;
+  text-align: center;
+  color: var(--neon);
+  background: var(--panel);
+  border: 1px solid var(--purple);
+  border-radius: 16px;
+  box-shadow: 0 0 25px #8b5cf633;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
